@@ -1,9 +1,12 @@
 pandas
 langchain_google_genai
 langchain
+langchain_core
 huggingface_hub
 transformers
 sentence_transformers
 streamlit
+dotenv
+pickle
 dotenv
 -e .

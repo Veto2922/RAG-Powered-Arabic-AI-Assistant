@@ -25,8 +25,8 @@ if not google_api_key:
     raise ValueError("Did not find google_api_key, please add an environment variable `GOOGLE_API_KEY` which contains it, or pass `google_api_key` as a named parameter.")
 
 class Embedding:
-    def __init__(self):
-        self.model = SentenceTransformer('all-MiniLM-L12-v2')
+    def __init__(self , model):
+        self.model = model
     
     def embed_documents(self, docs):
         embeddings = self.model.encode(docs)
@@ -35,18 +35,23 @@ class Embedding:
     def embed_query(self, query):
         return self.model.encode(query).tolist()
 
+
+# ------------------------------------------------------------------------------------
+
 class Predict:
     def __init__(self):
         
-        embed_model = Embedding()
+        model =  SentenceTransformer('all-MiniLM-L12-v2')
+        embed_model = Embedding(model)
+        
         self.vector_data = Chroma(
             persist_directory=PERSIST_DIRECTORY,
             embedding_function=embed_model
         )
-        self.retriever = self.vector_data.as_retriever(search_type='similarity', search_kwargs={'k': 5})
+        self.retriever = self.vector_data.as_retriever(search_type='similarity', search_kwargs={'k': 10})
         
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-pro",
+            model="gemini-1.5-pro",
             google_api_key=google_api_key
         )
 
@@ -75,3 +80,11 @@ class Predict:
         except Exception as e:
             print("Error in get_answer:", e)
             return "An error occurred while generating the answer."
+
+
+# pred =  Predict()
+
+
+# text = 'من هو حاكم السعودية'
+# templot = 'plese answer the following what is the football'
+# print(pred.get_answer(templot , text))

@@ -1,9 +1,11 @@
 import streamlit as st
-from models.predict_model import Predict
+from models.predict_model import Predict 
+import logging
 import traceback
 
-# Initialize the RAG model
+
 predict = Predict()
+
 
 # Define the template
 template = """
@@ -23,27 +25,23 @@ Question: {question}
 answer:
 """
 
-# question = 'من هو رئيس مصر؟'
-# ans = predict.get_answer(template, question)
+def main():
+    st.title("RAG-Powered Arabic AI Assistant")
 
-# print(ans)
+    question = st.text_input("Ask a question:")
+    
+    if st.button("Get Answer"):
+        if question:
+            logging.info("Question submitted: %s", question)
+            try:
+                answer_stream = predict.get_answer(template, question)
+                for chunk in answer_stream:
+                    st.markdown(chunk, unsafe_allow_html=True)
+            except Exception as e:
+                logging.error("Error occurred while generating the answer: %s", traceback.format_exc())
+                st.error("An error occurred while generating the answer. Please try again later.")
+        else:
+            st.error("Please enter a question.")
 
-import logging
-
-# Streamlit UI
-st.title("RAG-Powered Arabic AI Assistant")
-
-question = st.text_input("Ask a question:")
-if st.button("Get Answer"):
-    if question:
-        logging.info("Question submitted: %s", question)
-        print(question)
-        try:
-            answer = predict.get_answer(template, question)
-            logging.info("Answer generated successfully.")
-            st.markdown(answer, unsafe_allow_html=True)
-        except Exception as e:
-            logging.error("Error occurred while generating the answer: %s", e)
-            st.error("An error occurred while generating the answer. Please try again later.")
-    else:
-        st.error("Please enter a question.")
+if __name__ == '__main__':
+    main()
