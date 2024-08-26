@@ -16,7 +16,9 @@ This project is an AI-powered QA assistant that leverages Retrieval-Augmented Ge
     - [File 1](https://drive.google.com/file/d/1ibbCH69F0W_e7xKjCRX1PW3cvPJIA-Fk/view?usp=sharing)
     - [File 2](https://drive.google.com/drive/folders/1kCUYhA0uxuk6PKBHhoyClPzXvj6_62qr?usp=sharing)
 
-4. **Set Up Environment Variables**:
+4. **open models folder then modified predict_model.py in files path you download**
+
+5. **Set Up Environment Variables**:
     - Create a `.env` file and add your `GOOGLE_API_KEY` and `AI2_API_KEY`.
     
     Example `.env` file:
@@ -24,7 +26,7 @@ This project is an AI-powered QA assistant that leverages Retrieval-Augmented Ge
     GOOGLE_API_KEY=your_google_api_key
     AI2_API_KEY=your_ai2_api_key
     ```
-5. **open test_pred notebook and start the system (don't use app.py or flask_app.py it is still under development)**
+6. **Open test_pred notebook and start the system (don't use app.py or flask_app.py it is still under development)**
 
 ## Project Structure
 
