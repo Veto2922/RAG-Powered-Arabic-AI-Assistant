@@ -1,0 +1,9 @@
+pandas
+langchain_google_genai
+langchain
+huggingface_hub
+transformers
+sentence_transformers
+streamlit
+dotenv
+-e .
