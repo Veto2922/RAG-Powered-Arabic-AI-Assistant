@@ -9,4 +9,6 @@ streamlit
 dotenv
 pickle
 dotenv
+gdown
+gradio
 -e .

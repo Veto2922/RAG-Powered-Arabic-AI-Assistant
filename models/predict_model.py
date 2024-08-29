@@ -10,19 +10,39 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.runnables import RunnablePassthrough
 from langchain.schema import StrOutputParser
 from dotenv import load_dotenv
+from .Check_files_exist import GoogleDriveDownloader
 
 # Load environment variables from the .env file
 load_dotenv()
 
+# Initialize the downloader class
+downloader = GoogleDriveDownloader()
+
+# Download the sample file and persist folder
+downloader.download_sample_file()
+downloader.download_persist_folder()
 # Directories
-SAMPLE_DIRECTORY = r'D:\Projects\RAG-Powered-Arabic-AI-Assistant\data\processed\sys_sample.pkl'
-PERSIST_DIRECTORY = r'D:\Projects\RAG-Powered-Arabic-AI-Assistant\data\processed\sample_vector_db2'
+SAMPLE_DIRECTORY = r'data\processed\all_split.pkl'
+PERSIST_DIRECTORY = r'data\processed\vector_db'
 
 # Retrieve the Google API Key from environment variables
-google_api_key = os.getenv('GOOGLE_API_KEY')
 
-if not google_api_key:
-    raise ValueError("Did not find google_api_key, please add an environment variable `GOOGLE_API_KEY` which contains it, or pass `google_api_key` as a named parameter.")
+# Define the template
+template = """
+    انت مساعد ذكي للاشخاص الناطقين باللغة العربيه تساعدهم في معرفة اخر الاخبار في مجالات مثل التكنولوجيا والسياسة والرياضة من الملفات المتاح لك الاطلاع عليها او البيانات التي تدربت عليها مسبقا ,وفي نهاية اجابتك اشكر المستخدم واسئله هل لديك اسئلة اخري 
+    
+knowledge you know:
+{context}
+
+Question: {question}
+
+ماذا تفعل إذا لم تكن الإجابة مدرجة في السؤال أو السياق او في البيانات التي تدرب عليها مسبقا:
+1. أخبر المستخدم أنك ليس لديك معلومات كافية للاجابة علي سواله
+3. اسأل المستخدم إذا كان لديه المزيد من الأسئلة ليطرحها بطريقة لطيفة ولائقة.
+4. لا تذكر أي شيء عن السياق.
+
+answer:
+"""
 
 class Embedding:
     def __init__(self , model):
@@ -39,19 +59,19 @@ class Embedding:
 # ------------------------------------------------------------------------------------
 
 class Predict:
-    def __init__(self):
+    def __init__(self , google_api_key):
         
-        model =  SentenceTransformer('all-MiniLM-L12-v2')
+        model =  SentenceTransformer('all-distilroberta-v1')
         embed_model = Embedding(model)
         
         self.vector_data = Chroma(
             persist_directory=PERSIST_DIRECTORY,
             embedding_function=embed_model
         )
-        self.retriever = self.vector_data.as_retriever(search_type='similarity', search_kwargs={'k': 10})
+        self.retriever = self.vector_data.as_retriever(search_type='similarity', search_kwargs={'k': 12})
         
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-1.5-pro",
+            model="gemini-1.5-flash",
             google_api_key=google_api_key
         )
 
@@ -63,7 +83,7 @@ class Predict:
     def test_retriever(self, text):
         return self.retriever.invoke(text)
     
-    def get_answer(self, template, question):
+    def get_answer(self, question):
         try:
             print("Generating answer...")
             custom_rag_prompt = ChatPromptTemplate.from_template(template)
@@ -75,11 +95,11 @@ class Predict:
             )
 
             answer = rag_chain.invoke(question)
-            print("Answer generated:", answer)
+            print("Answer generated:")
             return answer
         except Exception as e:
             print("Error in get_answer:", e)
-            return "An error occurred while generating the answer."
+            return "An error occurred while generating the answer please check your API."
 
 
 # pred =  Predict()
