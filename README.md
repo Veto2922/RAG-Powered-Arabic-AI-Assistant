@@ -12,21 +12,14 @@ This project is an AI-powered QA assistant that leverages Retrieval-Augmented Ge
     pip install -r requirements.txt
     ```
 
-3. **Download Required Files**:
-    - [File 1](https://drive.google.com/file/d/1ibbCH69F0W_e7xKjCRX1PW3cvPJIA-Fk/view?usp=sharing)
-    - [File 2](https://drive.google.com/drive/folders/1kCUYhA0uxuk6PKBHhoyClPzXvj6_62qr?usp=sharing)
-
-4. **open models folder then modified predict_model.py in files path you download**
-
-5. **Set Up Environment Variables**:
+2. **Set Up Environment Variables**:
     - Create a `.env` file and add your `GOOGLE_API_KEY` and `AI2_API_KEY`.
     
     Example `.env` file:
     ```env
     GOOGLE_API_KEY=your_google_api_key
-    AI2_API_KEY=your_ai2_api_key
     ```
-6. **Open test_pred notebook and start the system (don't use app.py or flask_app.py it is still under development)**
+3. **Open gradio_app.py or test_pred notebook and start the system**
 
 ## Project Structure
 
@@ -50,6 +43,3 @@ https://www.kaggle.com/datasets/haithemhermessi/sanad-dataset/data
 - This project is based on a Cookiecutter Data Science template.
 - The SANAD dataset is used for training and testing.
 
----
-
-This updated README provides a more comprehensive overview of the project, reflecting the detailed workflows and methods described in the notebooks.
