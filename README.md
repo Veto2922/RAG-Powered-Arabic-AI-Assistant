@@ -4,6 +4,9 @@
 
 This project is an AI-powered QA assistant that leverages Retrieval-Augmented Generation (RAG) to provide accurate and contextually relevant answers to customer questions in Arabic. The assistant retrieves relevant information from the SANAD dataset, combines it with generative AI capabilities, and delivers precise and detailed responses across various domains like technology, politics, sports, and more.
 
+![image](https://github.com/user-attachments/assets/2a20a628-b5ad-4d1f-8c2f-44ae09cc7568)
+
+
 ## To use this project
 
 1. **Python Version**: Ensure you are using Python 3.10 or above.
